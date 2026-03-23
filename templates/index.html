@@ -6,65 +6,83 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
+  <style>
+    /* बटन और कार्ड को छोटी स्क्रीन पर बेहतर दिखाने के लिए */
+    .custom-card {
+      border-radius: 15px;
+    }
+    @media (max-width: 576px) {
+      .btn-responsive {
+        width: 100% !important; /* मोबाइल पर बटन पूरी चौड़ाई लेंगे */
+        margin-bottom: 10px;
+      }
+    }
+  </style>
 </head>
 
 <body class="bg-light">
 
-<nav class="navbar navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand">Navbar</a>
-    <form class="d-flex">
-      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success" type="submit">Search</button>
-    </form>
-  </div>
-</nav>
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="#">GameZone</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navContent">
+        <form class="d-flex ms-auto mt-2 mt-lg-0">
+          <input class="form-control me-2" type="search" placeholder="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
 
   <div class="container mt-5">
-    <div class="card p-4 shadow">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6">
+        <div class="card p-4 shadow-sm custom-card">
 
-      <h3 class="text-center mb-4">Number Guessing Game</h3>
+          <h3 class="text-center mb-4 text-primary">Number Guessing Game</h3>
 
-      <form action="/guess" method="post">
+          <form action="/guess" method="post">
+            <div class="mb-4">
+              <label for="guess" class="form-label fw-bold">Guess Number (1-100)</label>
+              <input type="number" class="form-control form-control-lg" id="guess" name="guessNumber" 
+                     placeholder="Enter your guess" required>
+            </div>
 
-        <div class="mb-3">
-          <label for="guess" class="form-label">Guess Number</label>
-          <input type="number" class="form-control" id="guess" name="guessNumber" placeholder="Enter your guess number"
-            name="guess">
+            <div class="d-flex flex-column flex-sm-row gap-2 mb-4">
+              <button type="submit" class="btn btn-primary btn-responsive px-4">Submit Guess</button>
+              <a href="{{ url_for('reset') }}" class="btn btn-danger btn-responsive px-4">Restart Game</a>
+            </div>
+
+            <div class="bg-light p-3 rounded-3">
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="high" disabled {{ 'checked' if feedback == 'Too High!' }}>
+                <label class="form-check-label" for="high">Too High!</label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="attempt" checked disabled>
+                <label class="form-check-label fw-bold" for="attempt">
+                  Attempts: <span class="badge bg-secondary">{{ attempts }}</span>
+                </label>
+              </div>
+            </div>
+          </form>
+
+          <div class="result-section mt-4 text-center">
+            <h2 class="display-6">{{ number_guess if number_guess }}</h2>
+            <p class="lead fw-bold text-info">{{ feedback }}</p>
+          </div>
+
         </div>
-
-        <div class="mb-3">
-          <button type="submit" class="btn btn-primary w-25">Submit</button>
-        </div>
-
-        <div class="form-check mb-2">
-          <input class="form-check-input" type="checkbox" id="high">
-          <label class="form-check-label" for="high">
-            Too High!
-          </label>
-        </div>
-
-        <div class="form-check mb-3">
-          <input class="form-check-input" type="checkbox" id="attempt">
-          <label class="form-check-label" for="attempt">
-            Attempts: {{ attempts }}
-          </label>
-        </div>
-      </form>
-
-      <a href="{{ url_for('reset') }}" class="btn btn-danger" style="width: 25%;">Restart Game</a>
-      <h3 class="text-center mt-4">{{ number_guess }}</h3>
-      <p class="text-center">{{ feedback }}</p>
+      </div>
     </div>
-
   </div>
 
-  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
-
 </html>
